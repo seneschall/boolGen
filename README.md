@@ -19,4 +19,12 @@ Beispielhafter Programmaufruf:
 main.py --dnf 4
 ```
 
+Ausgabe:
+
+```
+$(\overline{A}B\overline{C}\overline{D}) + (AB\overline{C}D) + (ABCD) + (\overline{A}\overline{B}\overline{C}\overline{D}) + (\overline{A}B\overline{C}D) + (AB\overline{C}\overline{D}) + (ABC\overline{D})$
+```
+
+Gerendert:
+
 $(\overline{A}B\overline{C}\overline{D}) + (AB\overline{C}D) + (ABCD) + (\overline{A}\overline{B}\overline{C}\overline{D}) + (\overline{A}B\overline{C}D) + (AB\overline{C}\overline{D}) + (ABC\overline{D})$
