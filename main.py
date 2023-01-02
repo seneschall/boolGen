@@ -73,7 +73,7 @@ if style_is_specified:
     else:
         print("Hurra!")
 else:
-    style: str = "l"  # Latex is default
+    style = "l"  # Latex is default
 
 if mode[0] in KNF_FLAGS:
     print(
