@@ -3,8 +3,11 @@ import random
 LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
 
 
-def make_inverse(variable: str) -> str:
-    return r"\overline{" + variable + r"}"
+def make_inverse(variable: str, style: str) -> str:
+    if style == "l" or style == "latex":
+        return r"\overline{" + variable + r"}"
+    else:
+        return f"{variable}'"
 
 
 def make_conjunction(items: list[str]) -> str:
@@ -45,17 +48,6 @@ def gen_var_list(var_num: int) -> list[str]:
     return LETTERS[:var_num]
 
 
-def randomise_var_list(var_list: list[str]) -> list[str]:
-    results = []
-    for var in var_list:
-        random_value = random_boole()
-        if random_value is False:
-            results.append(make_inverse(var))
-        else:
-            results.append(var)
-    return results
-
-
 def gen_num_of_terms(min_amount: int, max_amount: int) -> int:
     return random.randint(min_amount, max_amount)
 
@@ -70,7 +62,18 @@ class boolean_expression:
         self.func_type = func_type
         self.amount = amount
 
+    def randomise_var_list(self, var_list: list[str]) -> list[str]:
+        results = []
+        for var in var_list:
+            random_value = random_boole()
+            if random_value is False:
+                results.append(make_inverse(var, self.style))
+            else:
+                results.append(var)
+        return results
+
     def make_random_term(self, var_list: list[str]) -> str:
+        randomise_var_list = self.randomise_var_list
         if self.func_type == "c" or self.func_type == "cnf":
             return make_maxterm(randomise_var_list(var_list))
         elif self.func_type == "d" or self.func_type == "dnf":
@@ -80,7 +83,11 @@ class boolean_expression:
 
     def make_boolean_expression(self) -> str:
         list_len = len(self.var_list)
-        num_of_terms = gen_num_of_terms(list_len, list_len + 3)
+        num_of_terms = (
+            gen_num_of_terms(list_len, list_len + 3)
+            if list_len > 2
+            else gen_num_of_terms(list_len, list_len + 2)
+        )
         results_list: list[str] = []
         while len(results_list) < num_of_terms:
             new_term = self.make_random_term(self.var_list)
@@ -95,10 +102,20 @@ class boolean_expression:
         return result
 
     def __str__(self) -> str:
-        if self.amount == 1:
+        style = self.style
+        if self.amount == 1 and (style == "l" or style == "latex"):
             return make_latex_math(self.make_boolean_expression())
-        else:
+        elif self.amount > 1 and (style == "l" or style == "latex"):
             res_str = ""
             for i in range(self.amount):
                 res_str += f"{self.make_boolean_expression()}\n"
-            return make_latex_math(self.make_boolean_expression(), inline=False)
+            return make_latex_math(res_str, inline=False)
+        elif self.amount == 1 and (style == "p" or style == "plain_text"):
+            return self.make_boolean_expression()
+        elif self.amount > 1 and (style == "p" or style == "plain_text"):
+            res_str = ""
+            for i in range(self.amount):
+                res_str += f"{self.make_boolean_expression()}\n"
+            return res_str
+        else:
+            raise ValueError("self.amount less than 1.")

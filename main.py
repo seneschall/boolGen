@@ -24,25 +24,22 @@ def main():
         help="Set the style of the output. Should be either l (Latex) "
         "or p (plain text).",
         default="l",
-        choices=["l", "p"],
+        choices=["l", "latex", "p", "plain_text"],
     )
 
     parser.add_argument(
         "vars",
         metavar="VARS",
         type=int,
-        choices=range(1, 10),
+        choices=range(2, 10),
         help="Number of variables to be generated. Should be an integer "
-        "between 1 and 9.",
+        "between 2 and 9.",
     )
 
-    # args = vars(parser.parse_args())
     args = parser.parse_args()
     func_type: str = args.type
     style: str = args.style
     var_num: int = args.vars
-
-    print(f"Die Variablen sind type: {func_type}, style: {style}, vars {vars}.")
 
     print(boolean_expression(var_num, func_type, style))
 
