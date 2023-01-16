@@ -1,7 +1,5 @@
 import argparse
-from knf import knf_gen
-from dnf import dnf_gen
-from random_var_gen import gen_var_list
+from classes import boolean_expression
 
 """
 Dieses Programm generiert boolsche Ausdrücke in KNF oder
@@ -23,7 +21,8 @@ def main():
     parser.add_argument(
         "-s",
         "--style",
-        help="Set the style of the output. Should be either l (Latex) or p (plain text).",
+        help="Set the style of the output. Should be either l (Latex) "
+        "or p (plain text).",
         default="l",
         choices=["l", "p"],
     )
@@ -33,29 +32,19 @@ def main():
         metavar="VARS",
         type=int,
         choices=range(1, 10),
-        help="Number of variables to be generated. Should be integer between 1 and 9.",
+        help="Number of variables to be generated. Should be an integer "
+        "between 1 and 9.",
     )
 
     # args = vars(parser.parse_args())
     args = parser.parse_args()
-    type: str = args.type
+    func_type: str = args.type
     style: str = args.style
-    vars: int = args.vars
+    var_num: int = args.vars
 
-    print(f"Die Variablen sind type: {type}, style: {style}, vars {vars}.")
+    print(f"Die Variablen sind type: {func_type}, style: {style}, vars {vars}.")
 
-    # if mode[0] in KNF_FLAGS:
-    #     print(
-    #         knf_gen(gen_var_list(NUM_OF_VARS))
-    #     )  # These functions should get the style as input
-
-    # elif mode[0] in DNF_FLAGS:
-    #     print(
-    #         dnf_gen(gen_var_list(NUM_OF_VARS))
-    #     )  # These functions should get the style as input
-
-    # else:
-    #     raise SyntaxError(f"Modus wurde nicht erkannt!\n{HELP_TEXT}")
+    print(boolean_expression(var_num, func_type, style))
 
 
 if __name__ == "__main__":
