@@ -1,30 +1,44 @@
 # Readme
 
-boolGen ist ein kleines Programm zum Erzeugen von boolschen Ausdrücken
-in KNF oder DNF. Das Ergebnis wird als Latex-Mathe-Formel ausgegeben.
+boolGen ist ein kleines Programm zur Zufallsgenerierung von boolschen Ausdrücken
+in Konjunktiver Normalform (KNF) oder Disjunktiver Normalform (DNF). Das Ergebnis wird wahlweise als Latex-Mathe-Formel oder als Plain-Text ausgegeben.
 
 boolGen kann mit den folgenden Parametern aufgerufen werden:
 
 ```bash
-main.py ['-k', '--knf', '-d', '--dnf', '-h', '--help'] [Anzahl der Variablen (zwischen 1 und 9)
+main.py --type [cnf, dnf] --style [optional: latex, plain_text] [Anzahl der Variablen (zwischen 2 und 9)
 ```
 
-Die flags geben an, ob eine Formel in DNF oder in KNF generiert wird.
-Die Anzahl am Ende gibt an, wie viele Variablen die Formel enthält.
-Keine dieser Angaben ist optional.
+Mit `--type` oder `-t` wird spezifiziert, ob der generierte boolsche Ausdruck in KNF (`cnf`/`c`) oder DNF (`dnf`/`d`) ausgegeben wird.
 
-Beispielhafter Programmaufruf:
+Mit `--style` oder `-s` kann optional noch spezifiziert werden, ob die Formel als Plain-Text (`plain_text`/`p`) oder Latex (`latex`/`l`) ausgegeben werden soll. Standard ist Latex.
+
+Abschließend muss angegeben werden, wie viele Variablen der Ausdrucken enthalten soll (Ganzzahl zwischen 2 und 9).
+
+## Beispielhafter Programmaufruf (Latex)
 
 ```bash
-main.py --dnf 4
+main.py --type dnf 4
 ```
 
 Ausgabe:
 
 ```
-$(\overline{A}B\overline{C}\overline{D}) + (AB\overline{C}D) + (ABCD) + (\overline{A}\overline{B}\overline{C}\overline{D}) + (\overline{A}B\overline{C}D) + (AB\overline{C}\overline{D}) + (ABC\overline{D})$
+$(A\overline{B}\overline{C}D) + (\overline{A}BCD) + (ABCD) + (\overline{A}B\overline{C}D) + (AB\overline{C}\overline{D})$
 ```
 
 Gerendert:
 
-$(\overline{A}B\overline{C}\overline{D}) + (AB\overline{C}D) + (ABCD) + (\overline{A}\overline{B}\overline{C}\overline{D}) + (\overline{A}B\overline{C}D) + (AB\overline{C}\overline{D}) + (ABC\overline{D})$
+$(A\overline{B}\overline{C}D) + (\overline{A}BCD) + (ABCD) + (\overline{A}B\overline{C}D) + (AB\overline{C}\overline{D})$
+
+## Beispielhafter Programmaufruf (Plain Text)
+
+```bash
+main.py --type cnf --style plain_text 5
+```
+
+Ausgabe:
+
+```
+(A' + B' + C + D + E')(A + B' + C + D' + E')(A + B' + C' + D' + E)(A + B + C + D + E')(A + B + C + D' + E')(A + B + C' + D + E)
+```
